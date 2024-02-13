@@ -1,6 +1,4 @@
-//
-// Created by agath on 13/02/2024.
-//
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,10 +20,37 @@ void show_value_of_element (list_element *element){
     printf("The value of the element is : %d\n", element -> element_value);
 }
 
+void show_all_value_of_element_with_sentence(list_element *list){
+    while (list->next != NULL){
+        show_value_of_element(list);
+        list = list->next;
+    }
+    show_value_of_element(list);
+}
+
+void append_element_to_list(list_element *list, int value){
+    list_element *temporary_value = malloc(sizeof(list_element));
+    temporary_value->element_value = value;
+    while (list->next != NULL){
+        list = list->next;
+    }
+    list->next = temporary_value;
+}
+
+void pop(list_element *list){
+    list_element *previus_element = NULL;
+    while(list->next != NULL){
+        previus_element = list;
+        list = list->next;
+    }
+    previus_element->next = NULL;
+    free(list);
+}
+
 int main (int argc, const char *argv[]) {
 
     list_element *temporary_element = NULL;
-    list_element *first_value_element = NULL;
+    list_element *list = NULL;
 
     for (int i=0; i<11; i++) {
         list_element *temporary_value = malloc(sizeof(list_element));
@@ -36,21 +61,29 @@ int main (int argc, const char *argv[]) {
         }
 
         if (temporary_element == NULL) {
-            first_value_element = temporary_value;
+            list = temporary_value;
         }
 
         temporary_element = temporary_value;
     }
 
-    show_value_of_element(first_value_element);
+//    show_value_of_element(list);
 
-    printf("Choose an index :\n");
-    int choice;
-    scanf("%d",&choice);
+    show_all_value_of_element_with_sentence(list);
+    printf("\n");
+    append_element_to_list(list, 40);
+    show_all_value_of_element_with_sentence(list);
+    pop(list);
+    printf("\n");
+    show_all_value_of_element_with_sentence(list);
 
-    printf("The value at the index %d is %d.\n",choice, get_element_value_from_index(choice,first_value_element));
-
-
-    printf("Congrats !!\n");
+//    printf("Choose an index :\n");
+//    int choice;
+//    scanf("%d",&choice);
+//
+//    printf("The value at the index %d is %d.\n",choice, get_element_value_from_index(choice,list));
+//
+//
+//    printf("Congrats !!\n");
     return 0;
 }
